@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:selectOneMenu id="operations" value = "#{servletBook.operation}">
+    <f:selectItem itemValue = "" itemLabel = "" noSelectionOption="true"/>
+    <f:selectItem itemValue = "add" itemLabel = "Dodaj nową książkę" />
+    <f:selectItem itemValue = "update" itemLabel = "Zmień pozycję katakogu" />
+    <f:selectItem itemValue = "delete" itemLabel = "Usuń ksiażkę" />
+    <f:ajax execute="operations" render="add" update="add"/>
+</h:selectOneMenu>
+
+<h:panelGroup id="add">
+    <c:set var="add" value="#{servletBook.operation eq 'add'}" />
+    <c:set var="update" value="#{servletBook.operation eq 'update'}" />
+    <c:set var="delete" value="#{servletBook.operation eq 'delete'}" />
+
+    <h:panelGroup id="renderadd" rendered="#{add}">
+
+        <h2>Dodaj książke: </h2>
+
+        <p>Imie : </p>
+        <h:inputText id="imie" value="#{servletBook.imie}" /><br/>
+
+        <p>Nazwisko : </p>
+        <h:inputText id="nazwisko" value="#{servletBook.nazwisko}" /><br/>
+
+        <p>Tytul : </p>
+        <h:inputText id="tytul" value="#{servletBook.tytul}" /><br/>
+
+        <p>ISBN : </p>
+        <h:inputText id="isbn" value="#{servletBook.isbn}" /><br/>
+
+        <p>Rok Wydania : </p>
+        <h:inputText id="rwyd" value="#{servletBook.rokWydania}" /><br/>
+
+        <p>Cena : </p>
+        <h:inputText id="cena" value="#{servletBook.cena}" /><br/>
+
+        <h:commandButton value="Dodaj" action="#{servletBook.addBook}" />
+    </h:panelGroup>
+    <h:panelGroup id="renderupdate" rendered="#{update}">
+        <p>Wybierz książkę: </p>
+        <h:inputText id="updateb" value="#{servletBook.tytul}" /><br/>
+
+        <p>Nazwisko : </p>
+        <h:inputText id="nazwiskoupdate" value="#{servletBook.nazwisko}" /><br/>
+
+        <p>Imie : </p>
+        <h:inputText id="imieupdate" value="#{servletBook.imie}" /><br/>
+
+        <p>ISBN : </p>
+        <h:inputText id="isbnupdate" value="#{servletBook.isbn}" /><br/>
+
+        <p>Rok Wydania : </p>
+        <h:inputText id="rwydupdate" value="#{servletBook.rokWydania}" /><br/>
+
+        <p>Cena : </p>
+        <h:inputText id="cenaupdate" value="#{servletBook.cena}" /><br/>
+
+        <h:commandButton value="Dodaj" action="#{servletBook.updateBooks}" />
+    </h:panelGroup>
+    <h:panelGroup id="renderdelete" rendered="#{delete}">
+        <p>Podaj tytuł książki: </p>
+        <h:inputText id="tytuldel" value="#{servletBook.tytul}" /><br/>
+        <h:commandButton value="Usuń" action="#{servletBook.deleteBook}" />
+    </h:panelGroup>
+</h:panelGroup><br/>
+</html>
