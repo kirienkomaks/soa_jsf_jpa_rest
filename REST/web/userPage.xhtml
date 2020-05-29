@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>User Page</title>
+</h:head>
+
+<h:body>
+
+
+    <h:form>
+        <p>Username : #{catalogService.changedUser.name}</p>
+        <p>User Age : #{catalogService.changedUser.age}</p>
+
+        <p:dataTable var="movie" value="#{catalogService.getListUserMovies()}" rowKey="#{movie.idMovie}" emptyMessage="No movies" >
+
+            <p:column filterBy="#{movie.title}">
+                <f:facet name="header">Title</f:facet>
+                <h:outputText value="#{movie.title}" />
+            </p:column>
+
+            <p:column filterBy="#{movie.uri}">
+                <f:facet name="header">URI Movie</f:facet>
+                <h:outputText value="#{movie.uri}" />
+            </p:column>
+
+
+
+            <p:column >
+                <f:facet name="header">
+                    <h:outputText value="Update" />
+                </f:facet>
+                <h:commandButton value="Update position" action="#{catalogService.updateMoviePosition(movie)}" />
+            </p:column>
+
+            <p:column >
+                <f:facet name="header">
+                    <h:outputText value="Delete" />
+                </f:facet>
+                <h:commandButton value="Delete movie" action="#{catalogService.deleteMovie(movie)}" />
+            </p:column>
+
+        </p:dataTable>
+
+        <p>Choose data to update: </p>
+        <h:selectOneMenu id="chooseItemToUpdate" value = "#{catalogService.chooseItemToUpdate}">
+            <f:selectItem itemLabel="Select One" itemValue="" />
+            <f:selectItem itemLabel="Title" itemValue="title" />
+            <f:selectItem itemLabel="URI" itemValue="uri" />
+
+        </h:selectOneMenu>
+        <h:inputText id="newValueToUpdate" value="#{catalogService.newValueToUpdate}">
+
+        </h:inputText><br/>
+
+        <h:commandButton value="Add movie " action="#{catalogService.setAdd(true)}"></h:commandButton><br/>
+
+        <h:panelGroup id="choosepanel">
+        <h:panelGroup rendered="#{catalogService.add}">
+            <p>Title: </p>
+            <h:inputText value="#{catalogService.title}" /><br/>
+
+            <p>Movie URL : </p>
+            <h:inputText  value="#{catalogService.url}" /><br/>
+
+            <h:commandButton value="Add" action="#{catalogService.addMovie}" />
+
+        </h:panelGroup>
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>
