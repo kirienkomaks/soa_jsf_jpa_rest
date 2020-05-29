@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">>
+<h:head>
+    <title>Ankieta</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h2>Ankieta</h2>
+        <p>Imie :</p>
+        <h:inputText id="imie" value="#{Profile.imie}" required="true" pt:placeholder="Jan" pt:required="true" pt:aria-required="true"/>
+
+        <h:message for="imie" style="color:red" />
+
+        <p>Email : </p>
+        <h:inputText id="email" value="#{Profile.email}" required="true" pt:placeholder="@gmail.com" pt:required="true" pt:aria-required="true" validatorMessage="Podaj poprawny adres">
+
+            <f:validator validatorId="emailValidator" />
+        </h:inputText>
+        <h:message for="email" style="color:red" />
+        <br/>
+
+        <p>Wiek :</p>
+        <h:inputText id="wiek" value="#{Profile.wiek}" size="10" validatorMessage="Nie jesteś w wieku ankietowania">
+            <f:validateLongRange minimum="10" maximum="100" />
+        </h:inputText>
+        <h:message for="wiek" style="color:red" />
+        <p:watermark for="wiek" value="podaj wiek" />
+
+        <p>Plec</p>
+        <h:selectOneMenu id="plec" value = "#{Profile.plec}">
+            <f:selectItem itemValue = "" itemLabel = "" />
+            <f:selectItem itemValue = "M" itemLabel = "Mezczyzna" />
+            <f:selectItem itemValue = "K" itemLabel = "Kobieta" />
+            <f:ajax execute="plec" render="linha" update="linha"/>
+        </h:selectOneMenu><br/>
+
+        <p>Wykształcenie: </p>
+        <h:inputText id="wykszt" value="#{Profile.wyksztalcenie}" />
+
+        <p>Wzrost</p>
+        <h:inputText id="wzr" value="#{Profile.wzrost}" validatorMessage="Poza przedziałem">
+                <f:validateLongRange minimum="#{Profile.wzrostmin}" maximum="#{Profile.wzrostmax}"  />
+        </h:inputText>
+
+        <h:message for="wzr" style="color:red" />
+        <p:watermark for="wzr" value="podaj wzrost" />
+        <br></br>
+
+        <h:panelGroup id="linha">
+            <c:set var="man" value="#{Profile.plec eq 'M'}" />
+            <c:set var="woman" value="#{Profile.plec eq 'K'}" />
+            <c:set var="none" value="#{Profile.plec eq ''}" />
+            <h:panelGroup id="n" rendered="#{none}">
+            </h:panelGroup>
+            <h:panelGroup id="renderman" rendered="#{man}">
+                <h:outputText value="Klatka  " rendered="#{man}" />
+                <br/>
+                <h:inputText value="#{Profile.klatka}" rendered="#{man}" />
+                <br/>
+                <h:outputText value="Pas  " rendered="#{man}" />
+                <br/>
+                <h:inputText value="#{Profile.pas}" rendered="#{man}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup id="renderwoman" rendered="#{woman}">
+                <h:outputText value="Obwód biustu  " rendered="#{woman}" />
+                <br/>
+                <h:inputText value="#{Profile.biust}" rendered="#{woman}" />
+                <br/>
+                <h:outputText value="Wielkość miseczki  " rendered="#{woman}" />
+                <br/>
+                <h:inputText value="#{Profile.miseczka}" rendered="#{woman}" />
+                <br/>
+                <h:outputText value="Talia  " rendered="#{woman}" />
+                <br/>
+                <h:inputText value="#{Profile.talia}" rendered="#{woman}" />
+                <br/>
+                <h:outputText value="Biodra  " rendered="#{woman}" />
+                <br/>
+                <h:inputText value="#{Profile.biodra}" rendered="#{woman}" />
+                <br/>
+            </h:panelGroup>
+
+        </h:panelGroup>
+        <h:commandButton value="Filtruj" action="#{Profile.quest}"></h:commandButton><br/>
+
+        <h:commandLink id="link" action="#{Profile.iterImg}">
+            <h:graphicImage value = "#{Profile.img[Profile.banner1]}" width="200" height="200"/>
+            <h:graphicImage value = "#{Profile.img[Profile.banner2]}" width="200" height="200"/>
+            <h:graphicImage value = "#{Profile.img[Profile.banner3]}" width="200" height="200"/>
+            <f:ajax execute="link" render="licznik"/>
+        </h:commandLink>
+
+        <h:outputText id="licznik" value=" Liczba kliknięc bannera: #{Profile.banners}"/>
+
+</h:form>
+</h:body>
+</html>

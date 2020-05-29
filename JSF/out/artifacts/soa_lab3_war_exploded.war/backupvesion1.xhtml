@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <title>Filter</title>
+</h:head>
+<h:body>
+
+
+    <h:form>
+
+        <h3>Waluta wybrana: #{ServletBook.waluta} </h3>
+        <p>Ksiazki dostepne: </p>
+
+        <h:dataTable value="#{ServletBook.filteredBooks}" selection="#{ServletBook.bookTEMP}" var="book"
+                     rowKey="#{book.tytle}" style="margin-bottom:0">
+
+            <h:column selectionMode="multiple">
+                <f:facet name="header">
+                    <h:outputText value="Select" />
+                </f:facet>
+                <h:selectBooleanCheckbox value="#{ServletBook.selectedIds[book.tytul]}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tytul</f:facet>
+                <h:outputText value="#{book.tytul}"/>
+            </h:column>
+            <h:column headerText="Autor">
+                <f:facet name="header">Autor</f:facet>
+                <h:outputText value="#{book.autor}"/>
+            </h:column>
+            <h:column headerText="Typ">
+                <h:outputText value="#{book.typ}"/>
+            </h:column>
+            <h:column headerText="Cena">
+                <h:outputText value="#{book.cena}"/>
+            </h:column>
+            <h:column headerText="Waluta">
+                <h:outputText value="#{book.waluta}"/>
+            </h:column>
+            <h:column headerText="Ilosc stron">
+                <h:outputText value="#{book.ilStron}"/>
+            </h:column>
+
+        </h:dataTable>
+        <h2>Wybierz walute konwertacji</h2>
+        <h:selectOneMenu value = "#{ServletBook.waluta}">
+            <f:selectItem itemValue = "oryginal" itemLabel = "Oryginalna" />
+            <f:selectItem itemValue = "USD" itemLabel = "USD" />
+            <f:selectItem itemValue = "PLN" itemLabel = "PLN" />
+            <f:selectItem itemValue = "RUB" itemLabel = "RUB" />
+        </h:selectOneMenu>
+
+        <h:commandButton value="Wybierz" action="#{ServletBook.select}"></h:commandButton>
+        <h:commandButton value="Return" action="index"></h:commandButton>
+
+
+
+
+        <h:dataTable value="#{ServletBook.books}" var="o">
+            <h:column>
+                <f:facet name="header">Tytul</f:facet>
+                #{o.tytul}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Autor</f:facet>
+                #{o.autor}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Typ</f:facet>
+                #{o.typ}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Cena</f:facet>
+                #{o.cena}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Waluta</f:facet>
+                #{o.waluta}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Ilosc stron</f:facet>
+                #{o.ilStron}
+            </h:column>
+
+        </h:dataTable>
+        <h3>Wybierz typ</h3>
+        <h:selectOneMenu value="#{ServletBook.typFilter}">
+            <f:selectItem itemValue="none" itemLabel="" />
+            <f:selectItem itemValue="wojenna" itemLabel="Wojenna" />
+            <f:selectItem itemValue="romans" itemLabel="Romans" />
+            <f:selectItem itemValue="kryminal" itemLabel="Kryminal" />
+
+        </h:selectOneMenu>
+
+        <br/>
+        <p>Cena : </p>
+        <h:inputText value="#{ServletBook.cenaMinFilter}"></h:inputText>
+        <h:inputText value="#{ServletBook.cenaMaxFilter}"></h:inputText>
+        <br/>
+        <p>Waluta : </p>
+        <h:selectOneMenu value="#{ServletBook.walutaWybranaFilter}">
+            <f:selectItem itemValue="none" itemLabel="" />
+            <f:selectItem itemValue="USD" itemLabel="USD" />
+            <f:selectItem itemValue="PLN" itemLabel="PLN" />
+            <f:selectItem itemValue="RUB" itemLabel="RUB" />
+        </h:selectOneMenu>
+        <br/>
+        <p>Ilosc stron</p>
+
+        <h:selectOneMenu value="#{ServletBook.iloscStronFilter}">
+            <f:selectItem itemValue="none" itemLabel="" />
+            <f:selectItem itemValue="300" itemLabel="0-300" />
+            <f:selectItem itemValue="600" itemLabel="300-600" />
+            <f:selectItem itemValue="900" itemLabel="600-900" />
+            <f:selectItem itemValue="1000" itemLabel="900+" />
+        </h:selectOneMenu>
+
+
+    </h:form>
+</h:body>
+</html>

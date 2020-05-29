@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <title>Pytania</title>
+</h:head>
+<h:body>
+<h:form>
+    <h3>Ile jesteś w stanie przeznaczyc miesięcznie na zakup ubrania?</h3>
+
+    <h:selectOneMenu value = "#{Profile.kosztyzakupu}">
+        <f:selectItem itemValue = "do 100 zl" itemLabel = "do 100 zl" />
+        <f:selectItem itemValue = "100-500 zl" itemLabel = "100-500 zl" />
+        <f:selectItem itemValue = "500-1000 zl" itemLabel = "500-1000 zl" />
+        <f:selectItem itemValue = "powyzej 1000 zl" itemLabel = "powyzej 1000 zl" />
+    </h:selectOneMenu><br/>
+
+    <h3>Jak często dokonujesz zakupu ubrania?</h3>
+    <h:selectOneMenu value = "#{Profile.czestotliwosc}">
+        <f:selectItem itemValue = "Raz w tygodniu" itemLabel = "Raz w tygodniu" />
+        <f:selectItem itemValue = "Raz w miesiącu" itemLabel = "Raz w miesiącu" />
+        <f:selectItem itemValue = "Kilka razy w roku" itemLabel = "Kilka razy w roku" />
+    </h:selectOneMenu><br/>
+
+    <h3>W jakich kolorach preferujesz ubrania?</h3>
+    <h:selectManyCheckbox value = "#{Profile.kolory}">
+        <f:selectItem itemValue = "Kolorowo-jaskrawych" itemLabel = "Kolorowo-jaskrawych" />
+        <f:selectItem itemValue = "Stonowanych w szarościac" itemLabel = "Stonowanych w szarościach" />
+        <f:selectItem itemValue = "W czerni i bieli" itemLabel = "W czerni i bieli" />
+        <f:selectItem itemValue = "W samej czerni" itemLabel = "W samej czerni" />
+    </h:selectManyCheckbox><br/><br/>
+
+    <h3>Jakiego rodzaju ubrania najchętniej kupujesz?</h3>
+
+    <h:panelGroup>
+    <p>#{Profile.plec}</p>
+    <c:set var="man" value="#{Profile.plec eq 'M'}" />
+    <c:set var="woman" value="#{Profile.plec eq 'K'}" />
+
+        <h:selectManyCheckbox value = "#{Profile.ubrania}" rendered="#{woman}">
+            <f:selectItem itemValue = "Garsonki" itemLabel = "Garsonki" />
+            <f:selectItem itemValue = "Bluzki" itemLabel = "Bluzki" />
+            <f:selectItem itemValue = "Spodniczki" itemLabel = "Spodniczki" />
+            <f:selectItem itemValue = "Spodnie" itemLabel = "Spodnie" />
+        </h:selectManyCheckbox><br/>
+        <h:selectManyCheckbox value = "#{Profile.ubrania}" rendered="#{man}">
+            <f:selectItem itemValue = "Spodnie" itemLabel = "Spodnie" />
+            <f:selectItem itemValue = "Spodenki" itemLabel = "Spodenki" />
+            <f:selectItem itemValue = "Garnitury" itemLabel = "Garnitury" />
+            <f:selectItem itemValue = "Koszule" itemLabel = "Koszule" />
+            <f:selectItem itemValue = "Krawaty" itemLabel = "Krawaty" />
+        </h:selectManyCheckbox><br/>
+    </h:panelGroup>
+    <h:commandButton value="Filtruj" action="#{Profile.res}"></h:commandButton><br></br>
+    <h:commandLink id="link" action="#{Profile.iterImg}">
+        <h:graphicImage value = "#{Profile.img[Profile.banner1]}" width="200" height="200"/>
+        <h:graphicImage value = "#{Profile.img[Profile.banner2]}" width="200" height="200"/>
+        <h:graphicImage value = "#{Profile.img[Profile.banner3]}" width="200" height="200"/>
+        <f:ajax execute="link" render="licznik"/>
+    </h:commandLink>
+    <h:outputText id="licznik" value=" Liczba kliknięc bannera: #{Profile.banners}"/>
+</h:form>
+</h:body>
+</html>

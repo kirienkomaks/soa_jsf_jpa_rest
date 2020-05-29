@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <title>Wyniki</title>
+</h:head>
+<h:body>
+<h:form>
+    <h2>Wyniki ankiety: </h2>
+    <h3>Imie : #{Profile.imie}</h3>
+    <h3>Email : #{Profile.email}</h3>
+    <h3>Wiek : #{Profile.wiek}</h3>
+    <h3>Plec : #{Profile.plec}</h3>
+    <h3>Wykształcenie : #{Profile.wyksztalcenie}</h3>
+    <h3>Wzrost : #{Profile.wzrost}</h3>
+    <h:panelGroup>
+        <c:set var="man" value="#{Profile.plec eq 'M'}" />
+        <c:set var="woman" value="#{Profile.plec eq 'K'}" />
+        <h:panelGroup rendered="#{man}">
+            <h2>Klatka : #{Profile.klatka}</h2>
+            <h2>Pas : #{Profile.pas}</h2>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{woman}">
+            <h2>Obwód biustu : #{Profile.biust}</h2>
+            <h2>Wielkość miseczki : #{Profile.miseczka}</h2>
+            <h2>Talia : #{Profile.talia}</h2>
+            <h2>Biodra : #{Profile.biodra}</h2>
+        </h:panelGroup>
+    </h:panelGroup>
+
+    <h3>Koszty na ubrania: #{Profile.kosztyzakupu}</h3>
+    <h3>Częstotliwaść zakupów: #{Profile.czestotliwosc}</h3>
+    <h3>Kolory ubrania : #{Profile.kolorystring}</h3>
+    <h3>Rodzaj ubrań : #{Profile.ubraniastring}</h3>
+
+    <br/>
+
+    <h:commandLink id="link" action="#{Profile.iterImg}">
+        <h:graphicImage value = "#{Profile.img[Profile.banner1]}" width="200" height="200"/>
+        <h:graphicImage value = "#{Profile.img[Profile.banner2]}" width="200" height="200"/>
+        <h:graphicImage value = "#{Profile.img[Profile.banner3]}" width="200" height="200"/>
+        <f:ajax execute="link" render="licznik"/>
+    </h:commandLink>
+
+    <h:outputText id="licznik" value="Liczba kliknięc bannera: #{Profile.banners}"/>
+</h:form>
+</h:body>
+</html>

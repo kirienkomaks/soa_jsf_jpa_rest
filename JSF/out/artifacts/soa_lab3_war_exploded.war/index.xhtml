@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+   <title>Start Page</title>
+</h:head>
+<h:body>
+
+   <h:form>
+
+       <h2>Książki dostepne: </h2>
+       <p:dataTable var="book" value="#{ServletBook.books}" widgetVar="Table1" rowKey="#{book.tytul}"
+                    emptyMessage="No books" filteredValue="#{ServletBook.filteredBooks}">
+
+           <p:column >
+               <f:facet name="header">
+                   <h:outputText value="Wybierz" />
+               </f:facet>
+               <p:selectBooleanCheckbox value="#{ServletBook.selectedIds[book.tytul]}"/>
+           </p:column>
+
+           <p:column filterBy="#{book.tytul}" filterMatchMode="contains">
+               <f:facet name="header">Tytul</f:facet>
+
+               <h:outputText value="#{book.tytul}" />
+           </p:column>
+
+           <p:column filterBy="#{book.autor}" filterMatchMode="contains">
+               <f:facet name="header">Autor</f:facet>
+               <h:outputText value="#{book.autor}" />
+           </p:column>
+
+           <p:column filterBy="#{book.typ}" filterMatchMode="contains">
+               <f:facet name="header">Typ</f:facet>
+               <f:facet name="filter">
+                   <p:selectOneMenu onchange="PF('Table1').filter()" styleClass="custom-filter">
+                       <f:selectItem itemLabel="" itemValue="#{null}" noSelectionOption="true" />
+                       <f:selectItem itemValue="wojenna" itemLabel="Wojenna" />
+                       <f:selectItem itemValue="romans" itemLabel="Romans" />
+                       <f:selectItem itemValue="kryminal" itemLabel="Kryminal" />
+                   </p:selectOneMenu>
+               </f:facet>
+               <h:outputText value="#{book.typ}" />
+           </p:column>
+
+           <p:column filterBy="#{book.waluta}" filterMatchMode="contains">
+               <f:facet name="header">Waluta</f:facet>
+               <f:facet name="filter">
+                   <p:selectOneMenu label="Waluta" onchange="PF('Table1').filter()" styleClass="custom-filter">
+                       <f:selectItem itemLabel="" itemValue="#{null}" noSelectionOption="true" />
+                       <f:selectItem itemValue="USD" itemLabel="USD" />
+                       <f:selectItem itemValue="PLN" itemLabel="PLN" />
+                       <f:selectItem itemValue="RUB" itemLabel="RUB" />
+                   </p:selectOneMenu>
+               </f:facet>
+               <h:outputText value="#{book.waluta}" />
+           </p:column>
+
+           <p:column filterBy="#{book.ilStron}" headerText="Ilosc Stron(Min)" filterFunction="#{ServletBook.filterByPage}">
+               <h:outputText value="#{book.ilStron}">
+               </h:outputText>
+           </p:column>
+
+           <p:column filterBy="#{book.cena}" headerText="Cena(Min)" filterFunction="#{ServletBook.filterByPrice}">
+               <h:outputText value="#{book.cena}">
+
+               </h:outputText>
+           </p:column>
+
+       </p:dataTable>
+
+       <h2>Wybierz walute konwertacji</h2>
+       <h:selectOneMenu value = "#{ServletBook.waluta}">
+           <f:selectItem itemValue = "oryginal" itemLabel = "Oryginalna" />
+           <f:selectItem itemValue = "USD" itemLabel = "USD" />
+           <f:selectItem itemValue = "PLN" itemLabel = "PLN" />
+           <f:selectItem itemValue = "RUB" itemLabel = "RUB" />
+       </h:selectOneMenu>
+       <h:commandButton value="Filtruj" action="#{ServletBook.select}"></h:commandButton>
+
+
+   </h:form>
+</h:body>
+</html>
