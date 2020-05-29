@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Start Page</title>
+</h:head>
+<h:body>
+
+    <h:form>
+        <h1>Library</h1>
+
+        <p:dataTable var="catalog" value="#{servletBook.readCatalog()}" rowKey="#{catalog.idCatalog}"
+                     emptyMessage="No books" >
+
+
+            <p:column filterBy="#{catalog.positionName}">
+                <f:facet name="header">Tytul</f:facet>
+                <h:outputText value="#{catalog.positionName}" />
+            </p:column>
+
+            <p:column filterBy="#{catalog.authorName}">
+                <f:facet name="header">Imie Autora</f:facet>
+                <h:outputText value="#{catalog.authorName}" />
+            </p:column>
+
+            <p:column filterBy="#{catalog.authorSurname}">
+                <f:facet name="header">Nazwisko Autora</f:facet>
+                <h:outputText value="#{catalog.authorSurname}" />
+            </p:column>
+
+            <p:column filterBy="#{catalog.quantity}">
+                <f:facet name="header">Ilość ekzemplarzy</f:facet>
+                <h:outputText value="#{catalog.quantity}" />
+            </p:column>
+
+            <p:column filterBy="#{catalog.available}">
+                <f:facet name="header">Dostepne</f:facet>
+                <h:outputText value="#{catalog.available}" />
+            </p:column>
+
+        </p:dataTable>
+
+        <br></br>
+
+        <h:commandButton value="Szukaj książki " action="#{servletBook.setShow}"></h:commandButton><br/>
+        <h:commandButton value="Dodaj książke" action="#{servletBook.setAdd}"></h:commandButton><br />
+        <h:commandButton value="Zaktualizuj " action="#{servletBook.setUpdate}"></h:commandButton><br />
+        <h:commandButton value="Usun książkę " action="#{servletBook.setDelete}"></h:commandButton><br/>
+        <br/>
+        <h:commandButton value="Czytelnicy " action="libUsers"></h:commandButton><br/>
+        <h:commandButton value="Wypożyczenia " action="#{servletBook.reservation}"></h:commandButton>
+        <h:commandButton value="Zaawansowane zapytania " action="improvedSearch"></h:commandButton>
+
+
+        <h:panelGroup id="choosepanel">
+            <h:panelGroup rendered="#{servletBook.add}">
+                <p>Imie Autora: </p>
+                <h:inputText value="#{servletBook.name}" /><br/>
+
+                <p>Nazwisko Autora : </p>
+                <h:inputText  value="#{servletBook.surname}" /><br/>
+
+                <p>Tytul książki: </p>
+                <h:inputText value="#{servletBook.title}" /><br/>
+
+                <p>ISBN : </p>
+                <h:inputText  value="#{servletBook.isbn}" /><br/>
+
+                <p>Kategoria : </p>
+                <h:inputText  value="#{servletBook.category}" /><br/>
+
+                <h:commandButton value="Dodaj" action="#{servletBook.addBook}" />
+
+            </h:panelGroup>
+            <h:panelGroup rendered="#{servletBook.show}">
+                <p>Podaj nazwę : </p>
+                <h:inputText  value="#{servletBook.title}" /><br/>
+                <h:commandButton value="Szukaj" action="#{servletBook.searchBook}" />
+                <h:panelGroup rendered="#{servletBook.searchListBool}">
+                    <h:dataTable value="#{servletBook.searchList}" var="sb">
+                        <h:column>
+                            <f:facet name="header">Tytul</f:facet>
+                            #{sb.title}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Imie Autora</f:facet>
+                            #{sb.author.name}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Nazwisko Autora</f:facet>
+                            #{sb.author.surname}
+                        </h:column>
+                    </h:dataTable><br/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{servletBook.update}">
+                <p:dataTable var="book" value="#{servletBook.readListBooks()}" rowKey="#{book.idBook}"
+                             emptyMessage="No books" >
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Wybierz" />
+                        </f:facet>
+                        <h:commandButton value="Update" action="#{servletBook.updateBooks(book)}" />
+                    </p:column>
+
+                    <p:column filterBy="#{book.title}">
+                        <f:facet name="header">Tytul</f:facet>
+
+                        <h:outputText value="#{book.title}" />
+                    </p:column>
+
+                    <p:column filterBy="#{book.author.name}">
+                        <f:facet name="header">Autor name</f:facet>
+                        <h:outputText value="#{book.author.name}" />
+                    </p:column>
+                    <p:column filterBy="#{book.author.surname}">
+                        <f:facet name="header">Autor surname</f:facet>
+                        <h:outputText value="#{book.author.surname}" />
+                    </p:column>
+
+                </p:dataTable>
+                <p>Podaj nowe dane : </p>
+                <p>Imie Autora: </p>
+                <h:inputText value="#{servletBook.name}" /><br/>
+
+                <p>Nazwisko Autora : </p>
+                <h:inputText  value="#{servletBook.surname}" /><br/>
+
+                <p>Tytul książki: </p>
+                <h:inputText value="#{servletBook.title}" /><br/>
+
+                <p>ISBN : </p>
+                <h:inputText  value="#{servletBook.isbn}" /><br/>
+
+                <p>Kategoria : </p>
+                <h:inputText  value="#{servletBook.category}" /><br/>
+
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{servletBook.delete}">
+                <h2>Książki dostepne: </h2>
+
+                <p:dataTable var="book" value="#{servletBook.readListBooks()}" rowKey="#{book.idBook}"
+                             emptyMessage="No books">
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="Wybierz" />
+                    </f:facet>
+                    <h:commandButton value="Delete" action="#{servletBook.deleteBook(book)}" />
+                </p:column>
+
+                <p:column filterBy="#{book.title}">
+                    <f:facet name="header">Tytul</f:facet>
+
+                    <h:outputText value="#{book.title}" />
+                </p:column>
+
+                <p:column filterBy="#{book.author.name}">
+                    <f:facet name="header">Autor name</f:facet>
+                    <h:outputText value="#{book.author.name}" />
+                </p:column>
+                <p:column filterBy="#{book.author.surname}">
+                    <f:facet name="header">Autor surname</f:facet>
+                    <h:outputText value="#{book.author.surname}" />
+                </p:column>
+
+                </p:dataTable>
+
+                <h:commandButton value="Usuń" action="#{servletBook.deleteBook}" />
+            </h:panelGroup>
+
+
+
+        </h:panelGroup>
+
+    </h:form>
+</h:body>
+</html>

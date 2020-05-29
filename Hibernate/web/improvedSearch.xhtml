@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Improved Search</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h3>Wybierz rodzaj wyszukiwania</h3>
+        <h:commandButton value="Znajdż czytelnika względem autora" action="#{sqlQuery.setUserByAuthor}"></h:commandButton><br/>
+        <h:commandButton value="Znajdż czytelnika względem książki" action="#{sqlQuery.setUserByBookName}"></h:commandButton><br/>
+        <h:commandButton value="Znajdż autora względem czytelnika" action="#{sqlQuery.setAuthorByUser}"></h:commandButton><br/>
+        <h:commandButton value="Znajdż autora " action="#{sqlQuery.selectMaxAuthor}"></h:commandButton><br/>
+
+        <h:commandButton value="Strona główna" action="index"></h:commandButton><br/>
+
+        <h:panelGroup id="choosepanel">
+            <h:panelGroup rendered="#{sqlQuery.userByAuthor}">
+                <p>1 : </p>
+                <p>Imie Autora : </p>
+                <h:inputText  value="#{sqlQuery.nameAuthor}" /><br/>
+
+                <p>nazwisko Autora : </p>
+                <h:inputText  value="#{sqlQuery.surnameAuthor}" /><br/>
+
+                <p>Data wypożyczenia Od</p>
+                <p:datePicker id="buttonlend" value="#{sqlQuery.firstDate}" showIcon="true" pattern="dd/MM/yyyy">
+                </p:datePicker>
+
+                <br></br>
+
+                <p>Data wypożyczenia Do</p>
+                <p:datePicker id="buttonret" value="#{sqlQuery.secondDate}" showIcon="true"  pattern="dd/MM/yyyy">
+                </p:datePicker><br/>
+
+                <h:commandButton value="Wyszukiwanie" action="#{sqlQuery.selectUser}"></h:commandButton><br/>
+
+                <p:dataTable var="user" value="#{sqlQuery.users}" rowKey="#{user.idUser}"
+                             emptyMessage="No users">
+
+                    <p:column >
+                        <f:facet name="header">User name</f:facet>
+
+                        <h:outputText value="#{user.name}" />
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">User surname</f:facet>
+                        <h:outputText value="#{user.surname}" />
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:panelGroup>
+            <h:panelGroup rendered="#{sqlQuery.userByBookName}">
+                <p>2 : </p>
+                <p>Tytul książki : </p>
+                <h:inputText  value="#{sqlQuery.title}" /><br/>
+
+                <p>Data przeczytania Od</p>
+                <p:datePicker value="#{sqlQuery.firstDate}" showIcon="true" pattern="dd/MM/yyyy">
+                </p:datePicker>
+
+                <br></br>
+
+                <p>Data przeczytania Do</p>
+                <p:datePicker value="#{sqlQuery.secondDate}" showIcon="true"  pattern="dd/MM/yyyy">
+                </p:datePicker><br/>
+
+                <h:commandButton value="Wyszukiwanie" action="#{sqlQuery.selectUserBookName}"></h:commandButton><br/>
+
+                <p:dataTable var="user" value="#{sqlQuery.users}" rowKey="#{user.idUser}"
+                             emptyMessage="No users">
+
+                    <p:column filterBy="#{user.name}">
+                        <f:facet name="header">User name</f:facet>
+
+                        <h:outputText value="#{user.name}" />
+                    </p:column>
+
+                    <p:column filterBy="#{user.surname}">
+                        <f:facet name="header">User surname</f:facet>
+                        <h:outputText value="#{user.surname}" />
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{sqlQuery.authorByUser}">
+                <p>3 : </p>
+                <p>Imie czytelnika : </p>
+                <h:inputText  value="#{sqlQuery.nameUser}" /><br/>
+
+                <p>Nazwisko czytelnika : </p>
+                <h:inputText  value="#{sqlQuery.surnameUser}" /><br/>
+
+
+                <p>Data Od</p>
+
+                <p:datePicker value="#{sqlQuery.firstDate}" showIcon="true" pattern="dd/MM/yyyy">
+                </p:datePicker>
+
+                <br></br>
+
+                <p>Data Do</p>
+                <p:datePicker value="#{sqlQuery.secondDate}" showIcon="true"  pattern="dd/MM/yyyy">
+                </p:datePicker>
+                <br/>
+
+                <h:commandButton value="Wyszukiwanie" action="#{sqlQuery.selectAuthorUser}"></h:commandButton><br/>
+
+                <p:dataTable var="author" value="#{sqlQuery.authors}" rowKey="#{author.idAuthor}"
+                             emptyMessage="No users">
+
+                    <p:column filterBy="#{author.name}">
+                        <f:facet name="header">Author name</f:facet>
+
+                        <h:outputText value="#{author.name}" />
+                    </p:column>
+
+                    <p:column filterBy="#{author.surname}">
+                        <f:facet name="header">Author surname</f:facet>
+                        <h:outputText value="#{author.surname}" />
+                    </p:column>
+
+                </p:dataTable>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{sqlQuery.authorByMaxlendings}">
+
+                <p>Autor, którego czyta się najwięcej :  #{sqlQuery.author.name}  #{sqlQuery.author.surname}</p>
+
+            </h:panelGroup>
+
+        </h:panelGroup>
+
+
+
+
+
+    </h:form>
+</h:body>
+</html>
