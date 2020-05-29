@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Users</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:dataTable value="#{servletBook.readListUsers()}" var="u">
+            <h:column>
+                <f:facet name="header">Imie</f:facet>
+                #{u.name}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Nazwisko</f:facet>
+                #{u.surname}
+            </h:column>
+
+
+        </h:dataTable><br/>
+        <h:commandButton value="Dodaj czytelnika " action="#{servletBook.setAddUser}"></h:commandButton><br/>
+        <h:commandButton value="Strona główna " action="index"></h:commandButton><br/>
+        <h:panelGroup rendered="#{servletBook.addUser}">
+            <p>Imie : </p>
+            <h:inputText value="#{servletBook.name}" /><br/>
+
+            <p>Nazwisko : </p>
+            <h:inputText  value="#{servletBook.surname}" /><br/>
+
+            <p>Czy chcesz otrzymywać powiadomienia? </p>
+            <h:selectOneMenu value = "#{servletBook.notifications}">
+                <f:selectItem itemValue = "#{true}" itemLabel = "Tak" />
+                <f:selectItem itemValue = "#{false}" itemLabel = "Nie" />
+            </h:selectOneMenu>
+            <h:commandButton value="Dodanie" action="#{servletBook.addUser}"></h:commandButton><br/>
+        </h:panelGroup>
+
+        <p>Messages : </p>
+        <p>Imie : </p>
+        <h:inputText value="#{servletBook.name}" /><br/>
+
+        <p>Nazwisko : </p>
+        <h:inputText value="#{servletBook.surname}" /><br/>
+
+        <h:commandButton value="Messages" action="#{servletBook.showMessages}"></h:commandButton><br/>
+        <h:panelGroup rendered="#{servletBook.messages}">
+            <h:dataTable value="#{servletBook.getMessages()}" var="m">
+                <h:column>
+                    <f:facet name="header">Messages</f:facet>
+                    #{m.message}
+                </h:column>
+
+
+
+
+            </h:dataTable><br/>
+        </h:panelGroup>
+
+    </h:form>
+</h:body>
+
+</html>
